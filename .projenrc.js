@@ -7,7 +7,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
 
   autoApproveUpgrades: true,
   autoApproveOptions: {
-    allowedUsernames: ['jumic'],
+    allowedUsernames: ['jumic', 'jumic-automation'],
     secret: 'GITHUB_TOKEN',
   },
   depsUpgradeOptions: {
@@ -15,6 +15,12 @@ const project = new awscdk.AwsCdkTypeScriptApp({
       secret: 'GH_TOKEN',
     },
   },
+
+  cdkDependencies: [
+    '@aws-cdk/aws-dynamodb',
+    '@aws-cdk/pipelines',
+    '@aws-cdk/core',
+  ],
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
