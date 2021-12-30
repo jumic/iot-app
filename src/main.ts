@@ -12,7 +12,7 @@ const app = new App();
 
 new StatefulStack(app, 'Stateful-stack-dev', { env: devEnv });
 
-new PipelineStack(app, 'PipelineStack', {
+new PipelineStack(app, 'IotAppPipelineStack', {
   env: {
     account: '624132653920',
     region: 'eu-central-1',
