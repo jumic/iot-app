@@ -18,6 +18,7 @@ export class PipelineStack extends Stack {
           'npx projen build',
         ],
       }),
+      crossAccountKeys: true,
     });
 
     pipeline.addStage(new Application(this, 'Test', {
