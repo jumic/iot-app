@@ -8,14 +8,14 @@ export class PipelineStack extends Stack {
     super(scope, id, props);
 
     const pipeline = new pipelines.CodePipeline(this, 'Pipeline', {
+      pipelineName: 'IoT-App',
       synth: new pipelines.ShellStep('Synth', {
         input: pipelines.CodePipelineSource.connection('jumic/iot-app', 'main', {
           connectionArn: 'arn:aws:codestar-connections:eu-central-1:624132653920:connection/1edb6c36-946f-452d-a051-849b7ffbca7b',
         }),
         commands: [
-          'npm ci',
-          'npm run build',
-          'npx cdk synth',
+          'yarn install --check-files --frozen-lockfile',
+          'npx projen build',
         ],
       }),
     });
