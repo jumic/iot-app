@@ -10,11 +10,6 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     allowedUsernames: ['jumic', 'jumic-automation'],
     secret: 'GITHUB_TOKEN',
   },
-  depsUpgradeOptions: {
-    workflowOptions: {
-      secret: 'GH_TOKEN',
-    },
-  },
 
   cdkDependencies: [
     '@aws-cdk/aws-dynamodb',
