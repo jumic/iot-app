@@ -1,7 +1,19 @@
 {
   "dependencies": [
     {
+      "name": "@aws-sdk/client-iot-data-plane",
+      "type": "build"
+    },
+    {
+      "name": "@types/aws-lambda",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
+      "type": "build"
+    },
+    {
+      "name": "@types/lambda-log",
       "type": "build"
     },
     {
@@ -22,6 +34,10 @@
     {
       "name": "aws-cdk",
       "version": "^1.137.0",
+      "type": "build"
+    },
+    {
+      "name": "cdk-triggers",
       "type": "build"
     },
     {
@@ -59,6 +75,10 @@
       "type": "build"
     },
     {
+      "name": "lambda-log",
+      "type": "build"
+    },
+    {
       "name": "npm-check-updates",
       "version": "^12",
       "type": "build"
@@ -86,6 +106,31 @@
       "type": "runtime"
     },
     {
+      "name": "@aws-cdk/aws-iam",
+      "version": "^1.137.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-iot",
+      "version": "^1.137.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-lambda-event-sources",
+      "version": "^1.137.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-lambda",
+      "version": "^1.137.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-sqs",
+      "version": "^1.137.0",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-cdk/core",
       "version": "^1.137.0",
       "type": "runtime"
@@ -93,6 +138,14 @@
     {
       "name": "@aws-cdk/pipelines",
       "version": "^1.137.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-sdk/client-dynamodb",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-sdk/lib-dynamodb",
       "type": "runtime"
     },
     {

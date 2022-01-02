@@ -16,6 +16,8 @@
     ".projen/tasks.json",
     "cdk.json",
     "LICENSE",
+    "src/lambda/process-metrics-function.ts",
+    "src/lambda/process-metrics-integ-function.ts",
     "tsconfig.dev.json",
     "tsconfig.json"
   ],

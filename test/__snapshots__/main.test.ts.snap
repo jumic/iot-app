@@ -2,29 +2,293 @@
 
 exports[`Snapshot 1`] = `
 Object {
+  "Parameters": Object {
+    "AssetParametersfe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871ArtifactHash2E682D93": Object {
+      "Description": "Artifact hash for asset \\"fe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871\\"",
+      "Type": "String",
+    },
+    "AssetParametersfe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871S3Bucket3C7648E2": Object {
+      "Description": "S3 bucket for asset \\"fe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871\\"",
+      "Type": "String",
+    },
+    "AssetParametersfe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871S3VersionKey6DA28A36": Object {
+      "Description": "S3 key for asset version \\"fe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871\\"",
+      "Type": "String",
+    },
+  },
   "Resources": Object {
-    "DummyTable77F0C182": Object {
+    "BackendConstructProcessMetricsFunctionBC3950FC": Object {
+      "DependsOn": Array [
+        "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
+        "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersfe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871S3Bucket3C7648E2",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersfe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871S3VersionKey6DA28A36",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersfe5d779093ec496e2dc00b9f45f33fc41a2e20e3a9817f337803bbfd2d4cb871S3VersionKey6DA28A36",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Description": "src/lambda/process-metrics.lambda.ts",
+        "Environment": Object {
+          "Variables": Object {
+            "TABLE_NAME": Object {
+              "Ref": "StatefulConstructIotTable62D1C116",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "MemorySize": 2048,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "BackendConstructProcessMetricsFunctionServiceRole76F32C27": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "StatefulConstructIotTable62D1C116",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "sqs:ReceiveMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueUrl",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "StatefulConstructIotQueue64FEBDA0",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
+        "Roles": Array [
+          Object {
+            "Ref": "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "BackendConstructProcessMetricsFunctionSqsEventSourceMyStackStatefulConstructIotQueue5C7ECF0183423864": Object {
+      "Properties": Object {
+        "EventSourceArn": Object {
+          "Fn::GetAtt": Array [
+            "StatefulConstructIotQueue64FEBDA0",
+            "Arn",
+          ],
+        },
+        "FunctionName": Object {
+          "Ref": "BackendConstructProcessMetricsFunctionBC3950FC",
+        },
+      },
+      "Type": "AWS::Lambda::EventSourceMapping",
+    },
+    "StatefulConstructIotForwardingRoleADC228A4": Object {
+      "Properties": Object {
+        "TopicRulePayload": Object {
+          "Actions": Array [
+            Object {
+              "Sqs": Object {
+                "QueueUrl": Object {
+                  "Ref": "StatefulConstructIotQueue64FEBDA0",
+                },
+                "RoleArn": Object {
+                  "Fn::GetAtt": Array [
+                    "StatefulConstructQueueRole0F594FF3",
+                    "Arn",
+                  ],
+                },
+              },
+            },
+          ],
+          "AwsIotSqlVersion": "2016-03-23",
+          "RuleDisabled": false,
+          "Sql": "SELECT * as data, topic() as topic, timestamp() as timestamp FROM 'dev/#'",
+        },
+      },
+      "Type": "AWS::IoT::TopicRule",
+    },
+    "StatefulConstructIotQueue64FEBDA0": Object {
+      "DeletionPolicy": "Delete",
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "StatefulConstructIotTable62D1C116": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "AttributeDefinitions": Array [
           Object {
-            "AttributeName": "id",
+            "AttributeName": "PK",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "SK",
             "AttributeType": "S",
           },
         ],
+        "BillingMode": "PAY_PER_REQUEST",
         "KeySchema": Array [
           Object {
-            "AttributeName": "id",
+            "AttributeName": "PK",
             "KeyType": "HASH",
           },
+          Object {
+            "AttributeName": "SK",
+            "KeyType": "RANGE",
+          },
         ],
-        "ProvisionedThroughput": Object {
-          "ReadCapacityUnits": 5,
-          "WriteCapacityUnits": 5,
-        },
       },
       "Type": "AWS::DynamoDB::Table",
       "UpdateReplacePolicy": "Delete",
+    },
+    "StatefulConstructQueueRole0F594FF3": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "iot.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "StatefulConstructQueueRoleDefaultPolicy13009AF9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "StatefulConstructIotQueue64FEBDA0",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "StatefulConstructQueueRoleDefaultPolicy13009AF9",
+        "Roles": Array [
+          Object {
+            "Ref": "StatefulConstructQueueRole0F594FF3",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
   },
 }
