@@ -21,3 +21,6 @@ tsconfig.tsbuildinfo
 !/assets/
 cdk.out/
 .cdk.staging/
+test/.tmp/process-metrics.integ/deploy.cdk.out
+test/.tmp/process-metrics.integ/synth.cdk.out
+test/process-metrics.integ.snapshot

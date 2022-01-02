@@ -51,4 +51,17 @@ junit.xml
 /cdk.out/
 .cdk.staging/
 .parcel-cache/
+!/src/lambda/process-metrics-integ-function.ts
+!/src/lambda/process-metrics-function.ts
+test/process-metrics.integ.snapshot/asset.*
+test/process-metrics.integ.snapshot/**/asset.*
+test/process-metrics.integ.snapshot/cdk.out
+test/process-metrics.integ.snapshot/**/cdk.out
+test/process-metrics.integ.snapshot/manifest.json
+test/process-metrics.integ.snapshot/**/manifest.json
+test/process-metrics.integ.snapshot/tree.json
+test/process-metrics.integ.snapshot/**/tree.json
+test/.tmp/process-metrics.integ/deploy.cdk.out
+test/.tmp/process-metrics.integ/synth.cdk.out
+!test/process-metrics.integ.snapshot
 !/.github/workflows/upgrade.yml

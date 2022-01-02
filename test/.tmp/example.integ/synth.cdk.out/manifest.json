@@ -1,0 +1,545 @@
+{
+  "version": "15.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "Test.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Test.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Test": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Test.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bd084720a15658ff562f6423c2e60f09b333027eabd300576aad7d68acfa66cc.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Test.assets"
+        ]
+      },
+      "dependencies": [
+        "Test.assets"
+      ],
+      "metadata": {
+        "/Test/StatefulConstruct/IotQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StatefulConstructIotQueue64FEBDA0",
+            "trace": [
+              "new Queue (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-sqs/lib/queue.ts:178:19)",
+              "new StatefulConstruct (/Users/julian/dev/iot-app/src/stateful-stack.ts:18:25)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:11:18)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/StatefulConstruct/QueueRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StatefulConstructQueueRole0F594FF3",
+            "trace": [
+              "new Role (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/role.ts:201:18)",
+              "new StatefulConstruct (/Users/julian/dev/iot-app/src/stateful-stack.ts:20:22)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:11:18)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/StatefulConstruct/QueueRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StatefulConstructQueueRoleDefaultPolicy13009AF9",
+            "trace": [
+              "new Policy (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
+              "Role.addToPrincipalPolicy (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/role.ts:238:28)",
+              "Function.addToPrincipal (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/grant.ts:92:61)",
+              "Function.addToPrincipalOrResource (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/grant.ts:48:26)",
+              "Queue.grant (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-sqs/lib/queue-base.ts:122:22)",
+              "Queue.grantSendMessages (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-sqs/lib/queue-base.ts:100:22)",
+              "new StatefulConstruct (/Users/julian/dev/iot-app/src/stateful-stack.ts:23:23)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:11:18)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/StatefulConstruct/IotForwardingRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StatefulConstructIotForwardingRoleADC228A4",
+            "trace": [
+              "new StatefulConstruct (/Users/julian/dev/iot-app/src/stateful-stack.ts:25:5)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:11:18)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/StatefulConstruct/IotTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StatefulConstructIotTable62D1C116",
+            "trace": [
+              "new Table (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-dynamodb/lib/table.ts:698:18)",
+              "new StatefulConstruct (/Users/julian/dev/iot-app/src/stateful-stack.ts:41:17)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:11:18)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/BackendConstruct/ProcessMetricsFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
+            "trace": [
+              "new Role (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/role.ts:201:18)",
+              "new Function (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/function.ts:328:31)",
+              "new ProcessMetricsFunction (/Users/julian/dev/iot-app/src/lambda/process-metrics-function.ts:17:5)",
+              "new BackendConstruct (/Users/julian/dev/iot-app/src/backend-stack.ts:16:21)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:15:17)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/BackendConstruct/ProcessMetricsFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
+            "trace": [
+              "new Policy (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
+              "Role.addToPrincipalPolicy (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/role.ts:238:28)",
+              "Function.addToPrincipal (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/grant.ts:92:61)",
+              "Table.combinedGrant (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-dynamodb/lib/table.ts:542:29)",
+              "Table.grantReadWriteData (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-dynamodb/lib/table.ts:368:17)",
+              "new BackendConstruct (/Users/julian/dev/iot-app/src/backend-stack.ts:22:17)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:15:17)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/BackendConstruct/ProcessMetricsFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BackendConstructProcessMetricsFunctionBC3950FC",
+            "trace": [
+              "new Function (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/function.ts:398:35)",
+              "new ProcessMetricsFunction (/Users/julian/dev/iot-app/src/lambda/process-metrics-function.ts:17:5)",
+              "new BackendConstruct (/Users/julian/dev/iot-app/src/backend-stack.ts:16:21)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:15:17)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/BackendConstruct/ProcessMetricsFunction/SqsEventSource:TestStatefulConstructIotQueueB0C9C6A6/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BackendConstructProcessMetricsFunctionSqsEventSourceTestStatefulConstructIotQueueB0C9C6A672E8E4B0",
+            "trace": [
+              "new EventSourceMapping (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/event-source-mapping.ts:171:35)",
+              "ProcessMetricsFunction.addEventSourceMapping (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:183:12)",
+              "SqsEventSource.bind (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda-event-sources/lib/sqs.ts:43:39)",
+              "ProcessMetricsFunction.addEventSource (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:230:12)",
+              "new BackendConstruct (/Users/julian/dev/iot-app/src/backend-stack.ts:24:13)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:15:17)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/AssertSomeStuffFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AssertSomeStuffFunctionServiceRoleF8AF160E",
+            "trace": [
+              "new Role (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/role.ts:201:18)",
+              "new Function (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/function.ts:328:31)",
+              "new AssertSomeStuffFunction (/Users/julian/dev/iot-app/src/lambda/assert-some-stuff-function.ts:17:5)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:19:17)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/AssertSomeStuffFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AssertSomeStuffFunctionServiceRoleDefaultPolicyEADCE8FC",
+            "trace": [
+              "new Policy (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
+              "Role.addToPrincipalPolicy (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/role.ts:238:28)",
+              "Function.addToPrincipal (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/grant.ts:92:61)",
+              "Table.combinedGrant (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-dynamodb/lib/table.ts:542:29)",
+              "Table.grantReadData (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-dynamodb/lib/table.ts:337:17)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:25:16)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/AssertSomeStuffFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AssertSomeStuffFunctionB2B5812D",
+            "trace": [
+              "new Function (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/function.ts:398:35)",
+              "new AssertSomeStuffFunction (/Users/julian/dev/iot-app/src/lambda/assert-some-stuff-function.ts:17:5)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:19:17)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/AssertSomeStuffFunction/CurrentVersion/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AssertSomeStuffFunctionCurrentVersion14190B65c94c12a831d9dc87013b08b1cc2fe3c0",
+            "trace": [
+              "new Version (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/lambda-version.ts:131:21)",
+              "AssertSomeStuffFunction.get currentVersion [as currentVersion] (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-lambda/lib/function.ts:155:28)",
+              "new AfterCreate (/Users/julian/dev/iot-app/node_modules/cdk-triggers/src/triggers.ts:36:35)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:42:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/MyIotPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyIotPolicyCB76D4D8",
+            "trace": [
+              "new Policy (/Users/julian/dev/iot-app/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:26:18)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/RunAssertions/Resource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RunAssertionsC95CD85B",
+            "trace": [
+              "new CustomResource (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/custom-resource.ts:36:21)",
+              "new AfterCreate (/Users/julian/dev/iot-app/node_modules/cdk-triggers/src/triggers.ts:29:22)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:42:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/AWSCDK.TriggerCustomResourceProviderCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AWSCDKTriggerCustomResourceProviderCustomResourceProviderRoleE18FAF0A",
+            "trace": [
+              "new CustomResourceProvider (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:116:18)",
+              "Function.getOrCreateProvider (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:70:10)",
+              "new AfterCreate (/Users/julian/dev/iot-app/node_modules/cdk-triggers/src/triggers.ts:17:45)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:42:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/AWSCDK.TriggerCustomResourceProviderCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91",
+            "trace": [
+              "new CustomResourceProvider (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:134:21)",
+              "Function.getOrCreateProvider (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:70:10)",
+              "new AfterCreate (/Users/julian/dev/iot-app/node_modules/cdk-triggers/src/triggers.ts:17:45)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/test/example.integ.ts:42:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/julian/dev/iot-app/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "main (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/julian/dev/iot-app/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/Test/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion",
+            "trace": [
+              "addBootstrapVersionRule (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/stack-synthesizers/default-synthesizer.ts:458:17)",
+              "DefaultStackSynthesizer.synthesize (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/stack-synthesizers/default-synthesizer.ts:284:7)",
+              "/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:184:29",
+              "visit (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:231:5)",
+              "visit (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:227:5)",
+              "synthesizeTree (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:176:3)",
+              "Object.synthesize (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:39:3)",
+              "App.synth (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
+              "process.<anonymous> (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/app.ts:64:45)",
+              "Object.onceWrapper (node:events:510:26)",
+              "process.emit (node:events:390:28)",
+              "process.emit (node:domain:475:12)",
+              "process.emit (/Users/julian/dev/iot-app/node_modules/source-map-support/source-map-support.js:516:21)"
+            ]
+          }
+        ],
+        "/Test/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion",
+            "trace": [
+              "addBootstrapVersionRule (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/stack-synthesizers/default-synthesizer.ts:468:3)",
+              "DefaultStackSynthesizer.synthesize (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/stack-synthesizers/default-synthesizer.ts:284:7)",
+              "/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:184:29",
+              "visit (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:231:5)",
+              "visit (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:227:5)",
+              "synthesizeTree (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:176:3)",
+              "Object.synthesize (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/private/synthesis.ts:39:3)",
+              "App.synth (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
+              "process.<anonymous> (/Users/julian/dev/iot-app/node_modules/@aws-cdk/core/lib/app.ts:64:45)",
+              "Object.onceWrapper (node:events:510:26)",
+              "process.emit (node:events:390:28)",
+              "process.emit (node:domain:475:12)",
+              "process.emit (/Users/julian/dev/iot-app/node_modules/source-map-support/source-map-support.js:516:21)"
+            ]
+          }
+        ]
+      },
+      "displayName": "Test"
+    }
+  }
+}

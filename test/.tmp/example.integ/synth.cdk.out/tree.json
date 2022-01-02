@@ -1,0 +1,823 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Construct",
+          "version": "1.137.0"
+        }
+      },
+      "Test": {
+        "id": "Test",
+        "path": "Test",
+        "children": {
+          "StatefulConstruct": {
+            "id": "StatefulConstruct",
+            "path": "Test/StatefulConstruct",
+            "children": {
+              "IotQueue": {
+                "id": "IotQueue",
+                "path": "Test/StatefulConstruct/IotQueue",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Test/StatefulConstruct/IotQueue/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                      "aws:cdk:cloudformation:props": {}
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-sqs.CfnQueue",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-sqs.Queue",
+                  "version": "1.137.0"
+                }
+              },
+              "QueueRole": {
+                "id": "QueueRole",
+                "path": "Test/StatefulConstruct/QueueRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Test/StatefulConstruct/QueueRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "iot.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.137.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "Test/StatefulConstruct/QueueRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Test/StatefulConstruct/QueueRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "sqs:SendMessage",
+                                    "sqs:GetQueueAttributes",
+                                    "sqs:GetQueueUrl"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "StatefulConstructIotQueue64FEBDA0",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "StatefulConstructQueueRoleDefaultPolicy13009AF9",
+                            "roles": [
+                              {
+                                "Ref": "StatefulConstructQueueRole0F594FF3"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.137.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.137.0"
+                }
+              },
+              "IotForwardingRole": {
+                "id": "IotForwardingRole",
+                "path": "Test/StatefulConstruct/IotForwardingRole",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IoT::TopicRule",
+                  "aws:cdk:cloudformation:props": {
+                    "topicRulePayload": {
+                      "actions": [
+                        {
+                          "sqs": {
+                            "queueUrl": {
+                              "Ref": "StatefulConstructIotQueue64FEBDA0"
+                            },
+                            "roleArn": {
+                              "Fn::GetAtt": [
+                                "StatefulConstructQueueRole0F594FF3",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "ruleDisabled": false,
+                      "sql": "SELECT * as data, topic() as topic, timestamp() as timestamp FROM 'dev/#'",
+                      "awsIotSqlVersion": "2016-03-23"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iot.CfnTopicRule",
+                  "version": "1.137.0"
+                }
+              },
+              "IotTable": {
+                "id": "IotTable",
+                "path": "Test/StatefulConstruct/IotTable",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Test/StatefulConstruct/IotTable/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "keySchema": [
+                          {
+                            "attributeName": "PK",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "SK",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "PK",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "SK",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-dynamodb.CfnTable",
+                      "version": "1.137.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "Test/StatefulConstruct/IotTable/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.Resource",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-dynamodb.Table",
+                  "version": "1.137.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Construct",
+              "version": "1.137.0"
+            }
+          },
+          "BackendConstruct": {
+            "id": "BackendConstruct",
+            "path": "Test/BackendConstruct",
+            "children": {
+              "ProcessMetricsFunction": {
+                "id": "ProcessMetricsFunction",
+                "path": "Test/BackendConstruct/ProcessMetricsFunction",
+                "children": {
+                  "ServiceRole": {
+                    "id": "ServiceRole",
+                    "path": "Test/BackendConstruct/ProcessMetricsFunction/ServiceRole",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Test/BackendConstruct/ProcessMetricsFunction/ServiceRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "lambda.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "managedPolicyArns": [
+                              {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                  ]
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnRole",
+                          "version": "1.137.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "Test/BackendConstruct/ProcessMetricsFunction/ServiceRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "Test/BackendConstruct/ProcessMetricsFunction/ServiceRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "dynamodb:BatchGetItem",
+                                        "dynamodb:GetRecords",
+                                        "dynamodb:GetShardIterator",
+                                        "dynamodb:Query",
+                                        "dynamodb:GetItem",
+                                        "dynamodb:Scan",
+                                        "dynamodb:ConditionCheckItem",
+                                        "dynamodb:BatchWriteItem",
+                                        "dynamodb:PutItem",
+                                        "dynamodb:UpdateItem",
+                                        "dynamodb:DeleteItem"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StatefulConstructIotTable62D1C116",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Ref": "AWS::NoValue"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "sqs:ReceiveMessage",
+                                        "sqs:ChangeMessageVisibility",
+                                        "sqs:GetQueueUrl",
+                                        "sqs:DeleteMessage",
+                                        "sqs:GetQueueAttributes"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "StatefulConstructIotQueue64FEBDA0",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
+                                "roles": [
+                                  {
+                                    "Ref": "BackendConstructProcessMetricsFunctionServiceRole76F32C27"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                              "version": "1.137.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.Policy",
+                          "version": "1.137.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Role",
+                      "version": "1.137.0"
+                    }
+                  },
+                  "Code": {
+                    "id": "Code",
+                    "path": "Test/BackendConstruct/ProcessMetricsFunction/Code",
+                    "children": {
+                      "Stage": {
+                        "id": "Stage",
+                        "path": "Test/BackendConstruct/ProcessMetricsFunction/Code/Stage",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.AssetStaging",
+                          "version": "1.137.0"
+                        }
+                      },
+                      "AssetBucket": {
+                        "id": "AssetBucket",
+                        "path": "Test/BackendConstruct/ProcessMetricsFunction/Code/AssetBucket",
+                        "children": {
+                          "Notifications": {
+                            "id": "Notifications",
+                            "path": "Test/BackendConstruct/ProcessMetricsFunction/Code/AssetBucket/Notifications",
+                            "constructInfo": {
+                              "fqn": "@aws-cdk/core.Construct",
+                              "version": "1.137.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-s3.BucketBase",
+                          "version": "1.137.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-s3-assets.Asset",
+                      "version": "1.137.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Test/BackendConstruct/ProcessMetricsFunction/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "code": {
+                          "s3Bucket": {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "s3Key": "020201a97d0e1dbd196ca700227570571219b7e9a2d6644e8791f70e4370d794.zip"
+                        },
+                        "role": {
+                          "Fn::GetAtt": [
+                            "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
+                            "Arn"
+                          ]
+                        },
+                        "description": "src/lambda/process-metrics.lambda.ts",
+                        "environment": {
+                          "variables": {
+                            "TABLE_NAME": {
+                              "Ref": "StatefulConstructIotTable62D1C116"
+                            }
+                          }
+                        },
+                        "handler": "index.handler",
+                        "memorySize": 2048,
+                        "runtime": "nodejs14.x"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                      "version": "1.137.0"
+                    }
+                  },
+                  "SqsEventSource:TestStatefulConstructIotQueueB0C9C6A6": {
+                    "id": "SqsEventSource:TestStatefulConstructIotQueueB0C9C6A6",
+                    "path": "Test/BackendConstruct/ProcessMetricsFunction/SqsEventSource:TestStatefulConstructIotQueueB0C9C6A6",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Test/BackendConstruct/ProcessMetricsFunction/SqsEventSource:TestStatefulConstructIotQueueB0C9C6A6/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::Lambda::EventSourceMapping",
+                          "aws:cdk:cloudformation:props": {
+                            "functionName": {
+                              "Ref": "BackendConstructProcessMetricsFunctionBC3950FC"
+                            },
+                            "eventSourceArn": {
+                              "Fn::GetAtt": [
+                                "StatefulConstructIotQueue64FEBDA0",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-lambda.CfnEventSourceMapping",
+                          "version": "1.137.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.EventSourceMapping",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.Function",
+                  "version": "1.137.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Construct",
+              "version": "1.137.0"
+            }
+          },
+          "AssertSomeStuffFunction": {
+            "id": "AssertSomeStuffFunction",
+            "path": "Test/AssertSomeStuffFunction",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "Test/AssertSomeStuffFunction/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Test/AssertSomeStuffFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.137.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "Test/AssertSomeStuffFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Test/AssertSomeStuffFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StatefulConstructIotTable62D1C116",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StatefulConstructIotTable62D1C116",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "AssertSomeStuffFunctionServiceRoleDefaultPolicyEADCE8FC",
+                            "roles": [
+                              {
+                                "Ref": "AssertSomeStuffFunctionServiceRoleF8AF160E"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.137.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.137.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "Test/AssertSomeStuffFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "Test/AssertSomeStuffFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.AssetStaging",
+                      "version": "1.137.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "Test/AssertSomeStuffFunction/Code/AssetBucket",
+                    "children": {
+                      "Notifications": {
+                        "id": "Notifications",
+                        "path": "Test/AssertSomeStuffFunction/Code/AssetBucket/Notifications",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.137.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-s3.BucketBase",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-s3-assets.Asset",
+                  "version": "1.137.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "Test/AssertSomeStuffFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "775e5f71089e0224da436a447b04b706f9e15c9a23c33c1a9392066626e230b6.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "AssertSomeStuffFunctionServiceRoleF8AF160E",
+                        "Arn"
+                      ]
+                    },
+                    "description": "src/lambda/assert-some-stuff.lambda.ts",
+                    "environment": {
+                      "variables": {
+                        "TABLE_NAME": {
+                          "Ref": "StatefulConstructIotTable62D1C116"
+                        }
+                      }
+                    },
+                    "handler": "index.handler",
+                    "runtime": "nodejs14.x",
+                    "timeout": 10
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.137.0"
+                }
+              },
+              "CurrentVersion": {
+                "id": "CurrentVersion",
+                "path": "Test/AssertSomeStuffFunction/CurrentVersion",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Test/AssertSomeStuffFunction/CurrentVersion/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Version",
+                      "aws:cdk:cloudformation:props": {
+                        "functionName": {
+                          "Ref": "AssertSomeStuffFunctionB2B5812D"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-lambda.CfnVersion",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.Version",
+                  "version": "1.137.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.137.0"
+            }
+          },
+          "MyIotPolicy": {
+            "id": "MyIotPolicy",
+            "path": "Test/MyIotPolicy",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Test/MyIotPolicy/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                  "aws:cdk:cloudformation:props": {
+                    "policyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "iot:*",
+                          "Effect": "Allow",
+                          "Resource": "*"
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "policyName": "MyIotPolicyCB76D4D8",
+                    "roles": [
+                      {
+                        "Ref": "AssertSomeStuffFunctionServiceRoleF8AF160E"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                  "version": "1.137.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Policy",
+              "version": "1.137.0"
+            }
+          },
+          "RunAssertions": {
+            "id": "RunAssertions",
+            "path": "Test/RunAssertions",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Test/RunAssertions/Resource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "Test/RunAssertions/Resource/Default",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.CfnResource",
+                      "version": "1.137.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CustomResource",
+                  "version": "1.137.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "cdk-triggers.AfterCreate",
+              "version": "0.0.210"
+            }
+          },
+          "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider": {
+            "id": "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider",
+            "path": "Test/AWSCDK.TriggerCustomResourceProviderCustomResourceProvider",
+            "children": {
+              "Staging": {
+                "id": "Staging",
+                "path": "Test/AWSCDK.TriggerCustomResourceProviderCustomResourceProvider/Staging",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.AssetStaging",
+                  "version": "1.137.0"
+                }
+              },
+              "Role": {
+                "id": "Role",
+                "path": "Test/AWSCDK.TriggerCustomResourceProviderCustomResourceProvider/Role",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnResource",
+                  "version": "1.137.0"
+                }
+              },
+              "Handler": {
+                "id": "Handler",
+                "path": "Test/AWSCDK.TriggerCustomResourceProviderCustomResourceProvider/Handler",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnResource",
+                  "version": "1.137.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CustomResourceProvider",
+              "version": "1.137.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Stack",
+          "version": "1.137.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "@aws-cdk/core.App",
+      "version": "1.137.0"
+    }
+  }
+}

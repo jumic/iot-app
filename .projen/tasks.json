@@ -26,7 +26,51 @@
     },
     "bundle": {
       "name": "bundle",
-      "description": "Prepare assets"
+      "description": "Prepare assets",
+      "steps": [
+        {
+          "spawn": "bundle:lambda/process-metrics-integ.lambda"
+        },
+        {
+          "spawn": "bundle:lambda/process-metrics.lambda"
+        }
+      ]
+    },
+    "bundle:lambda/process-metrics-integ.lambda": {
+      "name": "bundle:lambda/process-metrics-integ.lambda",
+      "description": "Create a JavaScript bundle from src/lambda/process-metrics-integ.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/lambda/process-metrics-integ.lambda.ts --target=\"node14\" --platform=\"node\" --outfile=\"assets/lambda/process-metrics-integ.lambda/index.js\" --external:aws-sdk"
+        }
+      ]
+    },
+    "bundle:lambda/process-metrics-integ.lambda:watch": {
+      "name": "bundle:lambda/process-metrics-integ.lambda:watch",
+      "description": "Continuously update the JavaScript bundle from src/lambda/process-metrics-integ.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/lambda/process-metrics-integ.lambda.ts --target=\"node14\" --platform=\"node\" --outfile=\"assets/lambda/process-metrics-integ.lambda/index.js\" --external:aws-sdk --watch"
+        }
+      ]
+    },
+    "bundle:lambda/process-metrics.lambda": {
+      "name": "bundle:lambda/process-metrics.lambda",
+      "description": "Create a JavaScript bundle from src/lambda/process-metrics.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/lambda/process-metrics.lambda.ts --target=\"node14\" --platform=\"node\" --outfile=\"assets/lambda/process-metrics.lambda/index.js\" --external:aws-sdk"
+        }
+      ]
+    },
+    "bundle:lambda/process-metrics.lambda:watch": {
+      "name": "bundle:lambda/process-metrics.lambda:watch",
+      "description": "Continuously update the JavaScript bundle from src/lambda/process-metrics.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/lambda/process-metrics.lambda.ts --target=\"node14\" --platform=\"node\" --outfile=\"assets/lambda/process-metrics.lambda/index.js\" --external:aws-sdk --watch"
+        }
+      ]
     },
     "clobber": {
       "name": "clobber",
@@ -91,6 +135,25 @@
         }
       ]
     },
+    "devdeploy": {
+      "name": "devdeploy",
+      "steps": [
+        {
+          "exec": "cdk deploy IotDevStack"
+        }
+      ]
+    },
+    "devhotswap": {
+      "name": "devhotswap",
+      "steps": [
+        {
+          "exec": "cdk deploy --hotswap IotDevStack"
+        },
+        {
+          "exec": "cdk watch IotDevStack"
+        }
+      ]
+    },
     "diff": {
       "name": "diff",
       "description": "Diffs the currently deployed app against your code",
@@ -106,6 +169,69 @@
       "steps": [
         {
           "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js"
+        }
+      ]
+    },
+    "integ:process-metrics:assert": {
+      "name": "integ:process-metrics:assert",
+      "description": "assert the snapshot of integration test 'process-metrics'",
+      "steps": [
+        {
+          "exec": "[ -d \"test/process-metrics.integ.snapshot\" ] || (echo \"No snapshot available for integration test 'process-metrics'. Run 'projen integ:process-metrics:deploy' to capture.\" && exit 1)"
+        },
+        {
+          "exec": "cdk synth --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata --context aws-cdk:enableDiffNoFail=true --context @aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId=true --context @aws-cdk/core:enableStackNameDuplicates=true --context @aws-cdk/core:stackRelativeExports=true --context @aws-cdk/aws-ecr-assets:dockerIgnoreSupport=true --context @aws-cdk/aws-secretsmanager:parseOwnedSecretName=true --context @aws-cdk/aws-kms:defaultKeyPolicies=true --context @aws-cdk/aws-s3:grantWriteWithoutAcl=true --context @aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount=true --context @aws-cdk/aws-rds:lowercaseDbIdentifier=true --context @aws-cdk/aws-efs:defaultEncryptionAtRest=true --context @aws-cdk/aws-lambda:recognizeVersionProps=true --context @aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021=true --context @aws-cdk/core:newStyleStackSynthesis=true -o test/.tmp/process-metrics.integ/synth.cdk.out > /dev/null"
+        },
+        {
+          "exec": "diff -r -x asset.* -x cdk.out -x manifest.json -x tree.json test/process-metrics.integ.snapshot/ test/.tmp/process-metrics.integ/synth.cdk.out/"
+        }
+      ]
+    },
+    "integ:process-metrics:deploy": {
+      "name": "integ:process-metrics:deploy",
+      "description": "deploy integration test 'process-metrics' and capture snapshot",
+      "steps": [
+        {
+          "exec": "rm -fr test/.tmp/process-metrics.integ/deploy.cdk.out"
+        },
+        {
+          "exec": "cdk deploy --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata --context aws-cdk:enableDiffNoFail=true --context @aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId=true --context @aws-cdk/core:enableStackNameDuplicates=true --context @aws-cdk/core:stackRelativeExports=true --context @aws-cdk/aws-ecr-assets:dockerIgnoreSupport=true --context @aws-cdk/aws-secretsmanager:parseOwnedSecretName=true --context @aws-cdk/aws-kms:defaultKeyPolicies=true --context @aws-cdk/aws-s3:grantWriteWithoutAcl=true --context @aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount=true --context @aws-cdk/aws-rds:lowercaseDbIdentifier=true --context @aws-cdk/aws-efs:defaultEncryptionAtRest=true --context @aws-cdk/aws-lambda:recognizeVersionProps=true --context @aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021=true --context @aws-cdk/core:newStyleStackSynthesis=true --require-approval=never -o test/.tmp/process-metrics.integ/deploy.cdk.out"
+        },
+        {
+          "exec": "rm -fr test/process-metrics.integ.snapshot"
+        },
+        {
+          "exec": "mv test/.tmp/process-metrics.integ/deploy.cdk.out test/process-metrics.integ.snapshot"
+        },
+        {
+          "spawn": "integ:process-metrics:destroy"
+        }
+      ]
+    },
+    "integ:process-metrics:destroy": {
+      "name": "integ:process-metrics:destroy",
+      "description": "destroy integration test 'process-metrics'",
+      "steps": [
+        {
+          "exec": "cdk destroy --app test/process-metrics.integ.snapshot --no-version-reporting"
+        }
+      ]
+    },
+    "integ:process-metrics:snapshot": {
+      "name": "integ:process-metrics:snapshot",
+      "description": "update snapshot for integration test \"process-metrics\"",
+      "steps": [
+        {
+          "exec": "cdk synth --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata --context aws-cdk:enableDiffNoFail=true --context @aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId=true --context @aws-cdk/core:enableStackNameDuplicates=true --context @aws-cdk/core:stackRelativeExports=true --context @aws-cdk/aws-ecr-assets:dockerIgnoreSupport=true --context @aws-cdk/aws-secretsmanager:parseOwnedSecretName=true --context @aws-cdk/aws-kms:defaultKeyPolicies=true --context @aws-cdk/aws-s3:grantWriteWithoutAcl=true --context @aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount=true --context @aws-cdk/aws-rds:lowercaseDbIdentifier=true --context @aws-cdk/aws-efs:defaultEncryptionAtRest=true --context @aws-cdk/aws-lambda:recognizeVersionProps=true --context @aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021=true --context @aws-cdk/core:newStyleStackSynthesis=true -o test/process-metrics.integ.snapshot > /dev/null"
+        }
+      ]
+    },
+    "integ:process-metrics:watch": {
+      "name": "integ:process-metrics:watch",
+      "description": "watch integration test 'process-metrics' (without updating snapshots)",
+      "steps": [
+        {
+          "exec": "cdk watch --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata --context aws-cdk:enableDiffNoFail=true --context @aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId=true --context @aws-cdk/core:enableStackNameDuplicates=true --context @aws-cdk/core:stackRelativeExports=true --context @aws-cdk/aws-ecr-assets:dockerIgnoreSupport=true --context @aws-cdk/aws-secretsmanager:parseOwnedSecretName=true --context @aws-cdk/aws-kms:defaultKeyPolicies=true --context @aws-cdk/aws-s3:grantWriteWithoutAcl=true --context @aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount=true --context @aws-cdk/aws-rds:lowercaseDbIdentifier=true --context @aws-cdk/aws-efs:defaultEncryptionAtRest=true --context @aws-cdk/aws-lambda:recognizeVersionProps=true --context @aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021=true --context @aws-cdk/core:newStyleStackSynthesis=true -o test/.tmp/process-metrics.integ/deploy.cdk.out"
         }
       ]
     },
@@ -153,6 +279,9 @@
         },
         {
           "spawn": "eslint"
+        },
+        {
+          "spawn": "integ:process-metrics:assert"
         }
       ]
     },
@@ -200,7 +329,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk esbuild eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit json-schema npm-check-updates ts-jest ts-node typescript @aws-cdk/aws-dynamodb @aws-cdk/core @aws-cdk/pipelines constructs @aws-cdk/assert @aws-cdk/assertions"
+          "exec": "yarn upgrade @aws-sdk/client-iot-data-plane @types/aws-lambda @types/jest @types/lambda-log @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk cdk-triggers esbuild eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit json-schema lambda-log npm-check-updates ts-jest ts-node typescript @aws-cdk/aws-dynamodb @aws-cdk/aws-iam @aws-cdk/aws-iot @aws-cdk/aws-lambda-event-sources @aws-cdk/aws-lambda @aws-cdk/aws-sqs @aws-cdk/core @aws-cdk/pipelines @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb constructs @aws-cdk/assert @aws-cdk/assertions"
         },
         {
           "exec": "npx projen"
