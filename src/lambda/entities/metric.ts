@@ -1,13 +1,11 @@
-
 export interface MetricData {
   [key: string]: any;
 }
 
 export class Metric {
-
   public static metricFromItem(data: MetricData) {
     if (!data.deviceId || !data.timestamp || !data.type || !data.value) {
-      return new Error('missing data');
+      return new Error("missing data");
     }
     return new Metric(data.deviceId, data.timestamp, data.type, data.value);
   }
@@ -17,7 +15,12 @@ export class Metric {
   public value: number;
   public type: string;
 
-  constructor(deviceId: string, timestamp: string, type: string, value: number) {
+  constructor(
+    deviceId: string,
+    timestamp: string,
+    type: string,
+    value: number
+  ) {
     this.deviceId = deviceId;
     this.timestamp = timestamp;
     this.value = value;
@@ -48,5 +51,4 @@ export class Metric {
     };
     return item;
   }
-
 }
