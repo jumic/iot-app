@@ -79,7 +79,7 @@
     "@aws-cdk/pipelines": "^1.137.0",
     "@aws-sdk/client-dynamodb": "^3.45.0",
     "@aws-sdk/lib-dynamodb": "^3.45.0",
-    "constructs": "^3.3.178"
+    "constructs": "^3.2.27"
   },
   "license": "Apache-2.0",
   "version": "0.0.0",
