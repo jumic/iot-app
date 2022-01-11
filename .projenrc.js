@@ -55,4 +55,8 @@ const hotswap = project.addTask("devhotswap");
 hotswap.exec("cdk deploy --hotswap IotDevStack");
 hotswap.exec("cdk watch IotDevStack");
 
+project.upgradeWorkflow?.postUpgradeTask.spawn(
+  project.tasks.tryFind("integ:process-metrics:snapshot")
+);
+
 project.synth();
