@@ -56,6 +56,9 @@ hotswap.exec("cdk deploy --hotswap IotDevStack");
 hotswap.exec("cdk watch IotDevStack");
 
 project.upgradeWorkflow?.postUpgradeTask.spawn(
+  project.tasks.tryFind("test:update")
+);
+project.upgradeWorkflow?.postUpgradeTask.spawn(
   project.tasks.tryFind("integ:process-metrics:snapshot")
 );
 
