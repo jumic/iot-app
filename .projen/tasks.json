@@ -253,6 +253,9 @@
       "description": "Runs after upgrading dependencies",
       "steps": [
         {
+          "spawn": "bundle"
+        },
+        {
           "spawn": "test:update"
         },
         {

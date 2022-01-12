@@ -55,6 +55,7 @@ const hotswap = project.addTask("devhotswap");
 hotswap.exec("cdk deploy --hotswap IotDevStack");
 hotswap.exec("cdk watch IotDevStack");
 
+project.upgradeWorkflow?.postUpgradeTask.spawn(project.tasks.tryFind("bundle"));
 project.upgradeWorkflow?.postUpgradeTask.spawn(
   project.tasks.tryFind("test:update")
 );
