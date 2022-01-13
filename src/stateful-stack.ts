@@ -1,18 +1,19 @@
-import * as dynamodb from "@aws-cdk/aws-dynamodb";
-import * as iam from "@aws-cdk/aws-iam";
-import * as iot from "@aws-cdk/aws-iot";
-import * as sqs from "@aws-cdk/aws-sqs";
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as iot from "aws-cdk-lib/aws-iot";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import { Construct } from "constructs";
 
 export interface StatefulConstructProps {
   iotTopicPrefix: string;
 }
 
-export class StatefulConstruct extends cdk.Construct {
+export class StatefulConstruct extends Construct {
   readonly table: dynamodb.Table;
   readonly iotDataQueue: sqs.Queue;
 
-  constructor(scope: cdk.Construct, id: string, props: StatefulConstructProps) {
+  constructor(scope: Construct, id: string, props: StatefulConstructProps) {
     super(scope, id);
 
     this.iotDataQueue = new sqs.Queue(this, "IotQueue");

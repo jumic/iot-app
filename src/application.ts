@@ -1,4 +1,5 @@
-import { Construct, Stack, Stage, StageProps } from "@aws-cdk/core";
+import { Stack, Stage, StageProps } from "aws-cdk-lib";
+import { Construct } from "constructs";
 import { BackendConstruct } from "./backend-stack";
 import { StatefulConstruct } from "./stateful-stack";
 

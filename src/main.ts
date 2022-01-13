@@ -1,5 +1,6 @@
-import { App } from "@aws-cdk/core";
-import * as cdk from "@aws-cdk/core";
+import { App } from "aws-cdk-lib";
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
 import { BackendConstruct } from "./backend-stack";
 import { PipelineStack } from "./pipeline-stack";
 import { StatefulConstruct } from "./stateful-stack";
@@ -15,7 +16,7 @@ const app = new App();
 export interface IotDevStackProps extends cdk.StackProps {}
 
 export class IotDevStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: IotDevStackProps) {
+  constructor(scope: Construct, id: string, props: IotDevStackProps) {
     super(scope, id, props);
 
     const stateful = new StatefulConstruct(this, "StatefulConstruct", {

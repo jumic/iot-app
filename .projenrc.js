@@ -1,6 +1,6 @@
 const { awscdk } = require("projen");
 const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: "1.137.0",
+  cdkVersion: "2.0.0",
   defaultReleaseBranch: "main",
   name: "iot-app",
   repository: "https://github.com/jumic/iot-app/",
@@ -13,21 +13,6 @@ const project = new awscdk.AwsCdkTypeScriptApp({
 
   codeCov: true,
   prettier: true,
-
-  cdkDependencies: [
-    "@aws-cdk/aws-dynamodb",
-    "@aws-cdk/aws-sqs",
-    "@aws-cdk/aws-lambda",
-    "@aws-cdk/aws-iot",
-    "@aws-cdk/pipelines",
-    "@aws-cdk/aws-iam",
-    "@aws-cdk/aws-lambda-event-sources",
-    "@aws-cdk/core",
-  ],
-
-  context: {
-    "@aws-cdk/core:newStyleStackSynthesis": true,
-  },
 
   devDeps: [
     "@aws-sdk/client-iot-data-plane",
