@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"@aws-cdk/aws-iot-actions-alpha@^2.8.0-alpha.0":
+  version "2.8.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-iot-actions-alpha/-/aws-iot-actions-alpha-2.8.0-alpha.0.tgz#f24a2a0a56397f546d591310c0bac1109a50a5aa"
+  integrity sha512-siOYJrJljA90lJxTQMg7ay6BY0r3sa/o3vl/XAHiZV70Mi0fRYA4GYa8HSjAb6bYggKepG7up8cDptjER0VNcw==
+  dependencies:
+    case "1.6.3"
+
+"@aws-cdk/aws-iot-alpha@^2.8.0-alpha.0":
+  version "2.8.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-iot-alpha/-/aws-iot-alpha-2.8.0-alpha.0.tgz#9d7fdbafa372da3864667283a07ba16c4905bb9d"
+  integrity sha512-KjjjvemzP9pCMHXGvPEL/FDMtsuvqIdEGn+dFmdpWT4osoBFlFoQ/LqHVNgOgK2/0qLYCfbQRZROMYqefCjX0w==
+
 "@aws-cdk/cfnspec@2.7.0":
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/cfnspec/-/cfnspec-2.7.0.tgz#0bd5937b805ad3335189340a90803617a9900e7f"

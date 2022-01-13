@@ -5,7 +5,31 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "StatefulConstructQueueRole0F594FF3": {
+    "StatefulConstructTopicRule36E01E2C": {
+      "Type": "AWS::IoT::TopicRule",
+      "Properties": {
+        "TopicRulePayload": {
+          "Actions": [
+            {
+              "Sqs": {
+                "QueueUrl": {
+                  "Ref": "StatefulConstructIotQueue64FEBDA0"
+                },
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "StatefulConstructTopicRuleTopicRuleActionRole923198F2",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "AwsIotSqlVersion": "2016-03-23",
+          "Sql": "SELECT * as data, topic() as topic, timestamp() as timestamp FROM 'integ/#'"
+        }
+      }
+    },
+    "StatefulConstructTopicRuleTopicRuleActionRole923198F2": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -22,17 +46,13 @@
         }
       }
     },
-    "StatefulConstructQueueRoleDefaultPolicy13009AF9": {
+    "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": [
-                "sqs:SendMessage",
-                "sqs:GetQueueAttributes",
-                "sqs:GetQueueUrl"
-              ],
+              "Action": "sqs:SendMessage",
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
@@ -44,37 +64,12 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "StatefulConstructQueueRoleDefaultPolicy13009AF9",
+        "PolicyName": "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87",
         "Roles": [
           {
-            "Ref": "StatefulConstructQueueRole0F594FF3"
+            "Ref": "StatefulConstructTopicRuleTopicRuleActionRole923198F2"
           }
         ]
-      }
-    },
-    "StatefulConstructIotForwardingRoleADC228A4": {
-      "Type": "AWS::IoT::TopicRule",
-      "Properties": {
-        "TopicRulePayload": {
-          "Actions": [
-            {
-              "Sqs": {
-                "QueueUrl": {
-                  "Ref": "StatefulConstructIotQueue64FEBDA0"
-                },
-                "RoleArn": {
-                  "Fn::GetAtt": [
-                    "StatefulConstructQueueRole0F594FF3",
-                    "Arn"
-                  ]
-                }
-              }
-            }
-          ],
-          "AwsIotSqlVersion": "2016-03-23",
-          "RuleDisabled": false,
-          "Sql": "SELECT * as data, topic() as topic, timestamp() as timestamp FROM 'integ/#'"
-        }
       }
     },
     "StatefulConstructIotTable62D1C116": {
@@ -227,7 +222,7 @@
         "BackendConstructProcessMetricsFunctionServiceRole76F32C27"
       ]
     },
-    "BackendConstructProcessMetricsFunctionSqsEventSourceTestStatefulConstructIotQueueB0C9C6A672E8E4B0": {
+    "BackendConstructProcessMetricsFunctionSqsEventSourceProcessMetricsStatefulConstructIotQueueD749C64411B05F17": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
         "FunctionName": {
@@ -378,7 +373,7 @@
         }
       }
     },
-    "MyIotPolicyCB76D4D8": {
+    "LambdaIotPolicyF6E3F8BF": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -391,7 +386,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "MyIotPolicyCB76D4D8",
+        "PolicyName": "LambdaIotPolicyF6E3F8BF",
         "Roles": [
           {
             "Ref": "ProcessMetricsIntegFunctionServiceRole1F4D1587"
@@ -416,12 +411,12 @@
         "BackendConstructProcessMetricsFunctionBC3950FC",
         "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
         "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
-        "BackendConstructProcessMetricsFunctionSqsEventSourceTestStatefulConstructIotQueueB0C9C6A672E8E4B0",
-        "StatefulConstructIotForwardingRoleADC228A4",
+        "BackendConstructProcessMetricsFunctionSqsEventSourceProcessMetricsStatefulConstructIotQueueD749C64411B05F17",
         "StatefulConstructIotQueue64FEBDA0",
         "StatefulConstructIotTable62D1C116",
-        "StatefulConstructQueueRoleDefaultPolicy13009AF9",
-        "StatefulConstructQueueRole0F594FF3"
+        "StatefulConstructTopicRule36E01E2C",
+        "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87",
+        "StatefulConstructTopicRuleTopicRuleActionRole923198F2"
       ],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
