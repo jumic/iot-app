@@ -1,7 +1,7 @@
-import * as dynamodb from "@aws-cdk/aws-dynamodb";
-import { SqsEventSource } from "@aws-cdk/aws-lambda-event-sources";
-import * as sqs from "@aws-cdk/aws-sqs";
-import * as cdk from "@aws-cdk/core";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import { Construct } from "constructs";
 import { ProcessMetricsFunction } from "./lambda/process-metrics-function";
 
 export interface BackendConstructProps {
@@ -9,8 +9,8 @@ export interface BackendConstructProps {
   iotDataQueue: sqs.Queue;
 }
 
-export class BackendConstruct extends cdk.Construct {
-  constructor(scope: cdk.Construct, id: string, props: BackendConstructProps) {
+export class BackendConstruct extends Construct {
+  constructor(scope: Construct, id: string, props: BackendConstructProps) {
     super(scope, id);
 
     const handler = new ProcessMetricsFunction(this, "ProcessMetricsFunction", {

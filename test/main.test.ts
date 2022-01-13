@@ -1,5 +1,5 @@
-import { Template } from "@aws-cdk/assertions";
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
+import { Template } from "aws-cdk-lib/assertions";
 import { BackendConstruct } from "../src/backend-stack";
 import { StatefulConstruct } from "../src/stateful-stack";
 

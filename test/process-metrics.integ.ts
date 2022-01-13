@@ -1,5 +1,5 @@
-import * as iam from "@aws-cdk/aws-iam";
-import { App, Duration, Stack } from "@aws-cdk/core";
+import { App, Duration, Stack } from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { AfterCreate } from "cdk-triggers";
 import { BackendConstruct } from "../src/backend-stack";
 import { ProcessMetricsIntegFunction } from "../src/lambda/process-metrics-integ-function";

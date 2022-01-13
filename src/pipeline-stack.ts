@@ -1,5 +1,6 @@
-import { Construct, Stack, StackProps } from "@aws-cdk/core";
-import * as pipelines from "@aws-cdk/pipelines";
+import { Stack, StackProps } from "aws-cdk-lib";
+import * as pipelines from "aws-cdk-lib/pipelines";
+import { Construct } from "constructs";
 import { Application } from "./application";
 
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
