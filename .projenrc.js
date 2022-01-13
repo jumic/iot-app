@@ -22,7 +22,12 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     "lambda-log",
   ],
 
-  deps: ["@aws-sdk/client-dynamodb", "@aws-sdk/lib-dynamodb"],
+  deps: [
+    "@aws-sdk/client-dynamodb",
+    "@aws-sdk/lib-dynamodb",
+    "@aws-cdk/aws-iot-alpha",
+    "@aws-cdk/aws-iot-actions-alpha",
+  ],
 
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // packageName: undefined,  /* The 'name' in package.json. */

@@ -113,6 +113,14 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/aws-iot-actions-alpha",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-iot-alpha",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-sdk/client-dynamodb",
       "type": "runtime"
     },

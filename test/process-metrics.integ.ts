@@ -6,7 +6,7 @@ import { ProcessMetricsIntegFunction } from "../src/lambda/process-metrics-integ
 import { StatefulConstruct } from "../src/stateful-stack";
 
 const app = new App();
-const stack = new Stack(app, "Test");
+const stack = new Stack(app, "ProcessMetrics");
 
 const stateful = new StatefulConstruct(stack, "StatefulConstruct", {
   iotTopicPrefix: "integ",
@@ -16,6 +16,7 @@ const backend = new BackendConstruct(stack, "BackendConstruct", {
   table: stateful.table,
   iotDataQueue: stateful.iotDataQueue,
 });
+
 const handler = new ProcessMetricsIntegFunction(
   stack,
   "ProcessMetricsIntegFunction",
@@ -26,8 +27,10 @@ const handler = new ProcessMetricsIntegFunction(
     timeout: Duration.seconds(10),
   }
 );
+
+// grant permissions
 stateful.table.grantReadData(handler);
-const myPolicy = new iam.Policy(stack, "MyIotPolicy", {
+const lambdaIotPolicy = new iam.Policy(stack, "LambdaIotPolicy", {
   statements: [
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -36,9 +39,10 @@ const myPolicy = new iam.Policy(stack, "MyIotPolicy", {
     }),
   ],
 });
-handler.role?.attachInlinePolicy(myPolicy);
+handler.role?.attachInlinePolicy(lambdaIotPolicy);
 stateful.table.grantReadWriteData(handler);
 
+// test assertion
 new AfterCreate(stack, "RunAssertions", {
   resources: [stateful, backend],
   handler,

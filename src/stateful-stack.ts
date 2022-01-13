@@ -1,7 +1,7 @@
+import * as actions from "@aws-cdk/aws-iot-actions-alpha";
+import * as iot from "@aws-cdk/aws-iot-alpha";
 import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as iam from "aws-cdk-lib/aws-iam";
-import * as iot from "aws-cdk-lib/aws-iot";
 import * as sqs from "aws-cdk-lib/aws-sqs";
 import { Construct } from "constructs";
 
@@ -18,25 +18,11 @@ export class StatefulConstruct extends Construct {
 
     this.iotDataQueue = new sqs.Queue(this, "IotQueue");
 
-    const queuRole = new iam.Role(this, "QueueRole", {
-      assumedBy: new iam.ServicePrincipal("iot.amazonaws.com"),
-    });
-    this.iotDataQueue.grantSendMessages(queuRole);
-
-    new iot.CfnTopicRule(this, "IotForwardingRole", {
-      topicRulePayload: {
-        actions: [
-          {
-            sqs: {
-              queueUrl: this.iotDataQueue.queueUrl,
-              roleArn: queuRole.roleArn,
-            },
-          },
-        ],
-        ruleDisabled: false,
-        sql: `SELECT * as data, topic() as topic, timestamp() as timestamp FROM \'${props.iotTopicPrefix}/#\'`,
-        awsIotSqlVersion: "2016-03-23",
-      },
+    new iot.TopicRule(this, "TopicRule", {
+      sql: iot.IotSql.fromStringAsVer20160323(
+        `SELECT * as data, topic() as topic, timestamp() as timestamp FROM \'${props.iotTopicPrefix}/#\'`
+      ),
+      actions: [new actions.SqsQueueAction(this.iotDataQueue)],
     });
 
     this.table = new dynamodb.Table(this, "IotTable", {
