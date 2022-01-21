@@ -268,7 +268,7 @@
           "spawn": "test:update"
         },
         {
-          "spawn": "integ:process-metrics:snapshot"
+          "spawn": "integ:snapshot-all"
         }
       ]
     },
