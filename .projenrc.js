@@ -50,7 +50,7 @@ project.upgradeWorkflow?.postUpgradeTask.spawn(
   project.tasks.tryFind("test:update")
 );
 project.upgradeWorkflow?.postUpgradeTask.spawn(
-  project.tasks.tryFind("integ:process-metrics:snapshot")
+  project.tasks.tryFind("integ:snapshot-all")
 );
 
 project.synth();
