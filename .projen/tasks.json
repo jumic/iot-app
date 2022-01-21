@@ -195,7 +195,7 @@
           "exec": "rm -fr test/.tmp/process-metrics.integ/deploy.cdk.out"
         },
         {
-          "exec": "cdk deploy --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata --require-approval=never -o test/.tmp/process-metrics.integ/deploy.cdk.out"
+          "exec": "cdk deploy --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata '**' --require-approval=never -o test/.tmp/process-metrics.integ/deploy.cdk.out"
         },
         {
           "exec": "rm -fr test/process-metrics.integ.snapshot"
@@ -213,7 +213,7 @@
       "description": "destroy integration test 'process-metrics'",
       "steps": [
         {
-          "exec": "cdk destroy --app test/process-metrics.integ.snapshot --no-version-reporting"
+          "exec": "cdk destroy --app test/process-metrics.integ.snapshot '**' --no-version-reporting"
         }
       ]
     },
@@ -231,7 +231,16 @@
       "description": "watch integration test 'process-metrics' (without updating snapshots)",
       "steps": [
         {
-          "exec": "cdk watch --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata -o test/.tmp/process-metrics.integ/deploy.cdk.out"
+          "exec": "cdk watch --app \"ts-node -P tsconfig.dev.json test/process-metrics.integ.ts\" --no-version-reporting --no-path-metadata --no-asset-metadata '**' -o test/.tmp/process-metrics.integ/deploy.cdk.out"
+        }
+      ]
+    },
+    "integ:snapshot-all": {
+      "name": "integ:snapshot-all",
+      "description": "update snapshot for all integration tests",
+      "steps": [
+        {
+          "spawn": "integ:process-metrics:snapshot"
         }
       ]
     },
