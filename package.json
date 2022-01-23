@@ -41,7 +41,7 @@
     "projen": "npx projen"
   },
   "devDependencies": {
-    "@aws-sdk/client-iot-data-plane": "^3.47.2",
+    "@aws-sdk/client-iot-data-plane": "^3.48.0",
     "@types/aws-lambda": "^8.10.91",
     "@types/jest": "^27.4.0",
     "@types/lambda-log": "^2.2.1",
@@ -49,8 +49,8 @@
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "aws-cdk": "^2.0.0",
-    "cdk-triggers": "^0.1.9",
-    "esbuild": "^0.14.12",
+    "cdk-triggers": "^0.1.10",
+    "esbuild": "^0.14.13",
     "eslint": "^8",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-node": "^0.3.6",
@@ -71,8 +71,8 @@
   "dependencies": {
     "@aws-cdk/aws-iot-actions-alpha": "^2.8.0-alpha.0",
     "@aws-cdk/aws-iot-alpha": "^2.8.0-alpha.0",
-    "@aws-sdk/client-dynamodb": "^3.47.2",
-    "@aws-sdk/lib-dynamodb": "^3.47.2",
+    "@aws-sdk/client-dynamodb": "^3.48.0",
+    "@aws-sdk/lib-dynamodb": "^3.48.0",
     "aws-cdk-lib": "^2.0.0",
     "constructs": "^10.0.5"
   },
