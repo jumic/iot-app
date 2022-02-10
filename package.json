@@ -50,7 +50,7 @@
     "@typescript-eslint/parser": "^5",
     "aws-cdk": "^2.0.0",
     "cdk-triggers": "^0.1.26",
-    "esbuild": "^0.14.20",
+    "esbuild": "^0.14.21",
     "eslint": "^8",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-node": "^0.3.6",
@@ -69,8 +69,8 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@aws-cdk/aws-iot-actions-alpha": "^2.11.0-alpha.0",
-    "@aws-cdk/aws-iot-alpha": "^2.11.0-alpha.0",
+    "@aws-cdk/aws-iot-actions-alpha": "^2.12.0-alpha.0",
+    "@aws-cdk/aws-iot-alpha": "^2.12.0-alpha.0",
     "@aws-sdk/client-dynamodb": "^3.50.0",
     "@aws-sdk/lib-dynamodb": "^3.50.0",
     "aws-cdk-lib": "^2.0.0",
