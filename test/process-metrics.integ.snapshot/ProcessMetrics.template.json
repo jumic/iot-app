@@ -197,7 +197,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "3aa85de3b39738f87089bcd0ffcae232959b4b2157044f119809d8a3bff7245d.zip"
+          "S3Key": "53b8f323d155081a3297c615122afca38fcc72c6fed2d739fb6f6ee544fe3d22.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -340,7 +340,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "950a44eaa6e1e306d3598a64182cd040f841da5a5479c90f6405a36ff6d63367.zip"
+          "S3Key": "b32836a0db5b637aad43a9822c0826eecacadba681c04dc72bf0c2b2f0ae4e25.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -365,7 +365,7 @@
         "ProcessMetricsIntegFunctionServiceRole1F4D1587"
       ]
     },
-    "ProcessMetricsIntegFunctionCurrentVersionC3E10390c1e3d03fa5ff7bedb627005283b01067": {
+    "ProcessMetricsIntegFunctionCurrentVersionC3E10390e9d1ff61e6ccb192e36e698e4047c581": {
       "Type": "AWS::Lambda::Version",
       "Properties": {
         "FunctionName": {
@@ -404,7 +404,7 @@
           ]
         },
         "HandlerArn": {
-          "Ref": "ProcessMetricsIntegFunctionCurrentVersionC3E10390c1e3d03fa5ff7bedb627005283b01067"
+          "Ref": "ProcessMetricsIntegFunctionCurrentVersionC3E10390e9d1ff61e6ccb192e36e698e4047c581"
         }
       },
       "DependsOn": [
