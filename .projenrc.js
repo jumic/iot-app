@@ -1,4 +1,6 @@
 const { awscdk } = require("projen");
+const { UpgradeDependenciesSchedule } = require("projen/lib/javascript");
+
 const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: "2.0.0",
   defaultReleaseBranch: "main",
@@ -13,6 +15,12 @@ const project = new awscdk.AwsCdkTypeScriptApp({
 
   codeCov: true,
   prettier: true,
+
+  depsUpgradeOptions: {
+    workflowOptions: {
+      schedule: UpgradeDependenciesSchedule.WEEKLY,
+    },
+  },
 
   devDeps: [
     "@aws-sdk/client-iot-data-plane",
