@@ -1,527 +1,527 @@
 {
-  "Resources": {
-    "StatefulConstructIotQueue64FEBDA0": {
-      "Type": "AWS::SQS::Queue",
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "StatefulConstructTopicRule36E01E2C": {
-      "Type": "AWS::IoT::TopicRule",
-      "Properties": {
-        "TopicRulePayload": {
-          "Actions": [
-            {
-              "Sqs": {
-                "QueueUrl": {
-                  "Ref": "StatefulConstructIotQueue64FEBDA0"
-                },
-                "RoleArn": {
-                  "Fn::GetAtt": [
-                    "StatefulConstructTopicRuleTopicRuleActionRole923198F2",
-                    "Arn"
-                  ]
-                }
-              }
-            }
-          ],
-          "AwsIotSqlVersion": "2016-03-23",
-          "Sql": "SELECT * as data, topic() as topic, timestamp() as timestamp FROM 'integ/#'"
-        }
-      }
-    },
-    "StatefulConstructTopicRuleTopicRuleActionRole923198F2": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "iot.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      }
-    },
-    "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sqs:SendMessage",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "StatefulConstructIotQueue64FEBDA0",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87",
-        "Roles": [
-          {
-            "Ref": "StatefulConstructTopicRuleTopicRuleActionRole923198F2"
-          }
-        ]
-      }
-    },
-    "StatefulConstructIotTable62D1C116": {
-      "Type": "AWS::DynamoDB::Table",
-      "Properties": {
-        "KeySchema": [
-          {
-            "AttributeName": "PK",
-            "KeyType": "HASH"
-          },
-          {
-            "AttributeName": "SK",
-            "KeyType": "RANGE"
-          }
-        ],
-        "AttributeDefinitions": [
-          {
-            "AttributeName": "PK",
-            "AttributeType": "S"
-          },
-          {
-            "AttributeName": "SK",
-            "AttributeType": "S"
-          }
-        ],
-        "BillingMode": "PAY_PER_REQUEST"
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "BackendConstructProcessMetricsFunctionServiceRole76F32C27": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-              ]
-            ]
-          }
-        ]
-      }
-    },
-    "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "dynamodb:BatchGetItem",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-                "dynamodb:Query",
-                "dynamodb:GetItem",
-                "dynamodb:Scan",
-                "dynamodb:ConditionCheckItem",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:PutItem",
-                "dynamodb:UpdateItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:DescribeTable"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "StatefulConstructIotTable62D1C116",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Ref": "AWS::NoValue"
-                }
-              ]
-            },
-            {
-              "Action": [
-                "sqs:ReceiveMessage",
-                "sqs:ChangeMessageVisibility",
-                "sqs:GetQueueUrl",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "StatefulConstructIotQueue64FEBDA0",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
-        "Roles": [
-          {
-            "Ref": "BackendConstructProcessMetricsFunctionServiceRole76F32C27"
-          }
-        ]
-      }
-    },
-    "BackendConstructProcessMetricsFunctionBC3950FC": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
-          "S3Key": "ca76ff3255425804e6ea0a29b64efb5f786f0ebddae4388fdca10c19c01064d8.zip"
-        },
-        "Role": {
-          "Fn::GetAtt": [
-            "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
-            "Arn"
-          ]
-        },
-        "Description": "src/lambda/process-metrics.lambda.ts",
-        "Environment": {
-          "Variables": {
-            "TABLE_NAME": {
-              "Ref": "StatefulConstructIotTable62D1C116"
-            }
-          }
-        },
-        "Handler": "index.handler",
-        "MemorySize": 2048,
-        "Runtime": "nodejs14.x"
-      },
-      "DependsOn": [
-        "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
-        "BackendConstructProcessMetricsFunctionServiceRole76F32C27"
-      ]
-    },
-    "BackendConstructProcessMetricsFunctionSqsEventSourceProcessMetricsStatefulConstructIotQueueD749C64411B05F17": {
-      "Type": "AWS::Lambda::EventSourceMapping",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "BackendConstructProcessMetricsFunctionBC3950FC"
-        },
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "StatefulConstructIotQueue64FEBDA0",
-            "Arn"
-          ]
-        }
-      }
-    },
-    "ProcessMetricsIntegFunctionServiceRole1F4D1587": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-              ]
-            ]
-          }
-        ]
-      }
-    },
-    "ProcessMetricsIntegFunctionServiceRoleDefaultPolicyEBFA7185": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "dynamodb:BatchGetItem",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-                "dynamodb:Query",
-                "dynamodb:GetItem",
-                "dynamodb:Scan",
-                "dynamodb:ConditionCheckItem",
-                "dynamodb:DescribeTable"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "StatefulConstructIotTable62D1C116",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Ref": "AWS::NoValue"
-                }
-              ]
-            },
-            {
-              "Action": [
-                "dynamodb:BatchGetItem",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-                "dynamodb:Query",
-                "dynamodb:GetItem",
-                "dynamodb:Scan",
-                "dynamodb:ConditionCheckItem",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:PutItem",
-                "dynamodb:UpdateItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:DescribeTable"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "StatefulConstructIotTable62D1C116",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Ref": "AWS::NoValue"
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "ProcessMetricsIntegFunctionServiceRoleDefaultPolicyEBFA7185",
-        "Roles": [
-          {
-            "Ref": "ProcessMetricsIntegFunctionServiceRole1F4D1587"
-          }
-        ]
-      }
-    },
-    "ProcessMetricsIntegFunctionDBBB967F": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
-          "S3Key": "efe4a538face7a7a58d5f30e8d50acd30d39459d06568efedfa3d1bde4a6007d.zip"
-        },
-        "Role": {
-          "Fn::GetAtt": [
-            "ProcessMetricsIntegFunctionServiceRole1F4D1587",
-            "Arn"
-          ]
-        },
-        "Description": "src/lambda/process-metrics-integ.lambda.ts",
-        "Environment": {
-          "Variables": {
-            "TABLE_NAME": {
-              "Ref": "StatefulConstructIotTable62D1C116"
-            }
-          }
-        },
-        "Handler": "index.handler",
-        "Runtime": "nodejs14.x",
-        "Timeout": 10
-      },
-      "DependsOn": [
-        "ProcessMetricsIntegFunctionServiceRoleDefaultPolicyEBFA7185",
-        "ProcessMetricsIntegFunctionServiceRole1F4D1587"
-      ]
-    },
-    "ProcessMetricsIntegFunctionCurrentVersionC3E10390db56d6cc2bc96fdb4859376ea33bb2b1": {
-      "Type": "AWS::Lambda::Version",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "ProcessMetricsIntegFunctionDBBB967F"
-        }
-      }
-    },
-    "LambdaIotPolicyF6E3F8BF": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "iot:*",
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "LambdaIotPolicyF6E3F8BF",
-        "Roles": [
-          {
-            "Ref": "ProcessMetricsIntegFunctionServiceRole1F4D1587"
-          }
-        ]
-      }
-    },
-    "RunAssertionsC95CD85B": {
-      "Type": "Custom::Trigger",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91",
-            "Arn"
-          ]
-        },
-        "HandlerArn": {
-          "Ref": "ProcessMetricsIntegFunctionCurrentVersionC3E10390db56d6cc2bc96fdb4859376ea33bb2b1"
-        }
-      },
-      "DependsOn": [
-        "BackendConstructProcessMetricsFunctionBC3950FC",
-        "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
-        "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
-        "BackendConstructProcessMetricsFunctionSqsEventSourceProcessMetricsStatefulConstructIotQueueD749C64411B05F17",
-        "StatefulConstructIotQueue64FEBDA0",
-        "StatefulConstructIotTable62D1C116",
-        "StatefulConstructTopicRule36E01E2C",
-        "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87",
-        "StatefulConstructTopicRuleTopicRuleActionRole923198F2"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "AWSCDKTriggerCustomResourceProviderCustomResourceProviderRoleE18FAF0A": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ]
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-          }
-        ],
-        "Policies": [
-          {
-            "PolicyName": "Inline",
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "lambda:InvokeFunction"
-                  ],
-                  "Resource": [
-                    "*"
-                  ]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
-          "S3Key": "3e777716071641d12d67b3b44f6ddbe57437dc432ec6884eaf45828762672819.zip"
-        },
-        "Timeout": 900,
-        "MemorySize": 128,
-        "Handler": "__entrypoint__.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "AWSCDKTriggerCustomResourceProviderCustomResourceProviderRoleE18FAF0A",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs14.x"
-      },
-      "DependsOn": [
-        "AWSCDKTriggerCustomResourceProviderCustomResourceProviderRoleE18FAF0A"
-      ]
-    }
+ "Resources": {
+  "StatefulConstructIotQueue64FEBDA0": {
+   "Type": "AWS::SQS::Queue",
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
   },
-  "Parameters": {
-    "BootstrapVersion": {
-      "Type": "AWS::SSM::Parameter::Value<String>",
-      "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  "StatefulConstructTopicRule36E01E2C": {
+   "Type": "AWS::IoT::TopicRule",
+   "Properties": {
+    "TopicRulePayload": {
+     "Actions": [
+      {
+       "Sqs": {
+        "QueueUrl": {
+         "Ref": "StatefulConstructIotQueue64FEBDA0"
+        },
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "StatefulConstructTopicRuleTopicRuleActionRole923198F2",
+          "Arn"
+         ]
+        }
+       }
+      }
+     ],
+     "AwsIotSqlVersion": "2016-03-23",
+     "Sql": "SELECT * as data, topic() as topic, timestamp() as timestamp FROM 'integ/#'"
     }
+   }
   },
-  "Rules": {
-    "CheckBootstrapVersion": {
-      "Assertions": [
+  "StatefulConstructTopicRuleTopicRuleActionRole923198F2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "iot.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sqs:SendMessage",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "StatefulConstructIotQueue64FEBDA0",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87",
+    "Roles": [
+     {
+      "Ref": "StatefulConstructTopicRuleTopicRuleActionRole923198F2"
+     }
+    ]
+   }
+  },
+  "StatefulConstructIotTable62D1C116": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "PK",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "SK",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "PK",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "SK",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "BackendConstructProcessMetricsFunctionServiceRole76F32C27": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
         {
-          "Assert": {
-            "Fn::Not": [
-              {
-                "Fn::Contains": [
-                  [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                  ],
-                  {
-                    "Ref": "BootstrapVersion"
-                  }
-                ]
-              }
-            ]
-          },
-          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
-        }
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
       ]
+     }
+    ]
+   }
+  },
+  "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StatefulConstructIotTable62D1C116",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "sqs:ReceiveMessage",
+        "sqs:ChangeMessageVisibility",
+        "sqs:GetQueueUrl",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "StatefulConstructIotQueue64FEBDA0",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
+    "Roles": [
+     {
+      "Ref": "BackendConstructProcessMetricsFunctionServiceRole76F32C27"
+     }
+    ]
+   }
+  },
+  "BackendConstructProcessMetricsFunctionBC3950FC": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "a2de8600b7063bdbfb5c42097bd5710aef40a5f447d5be1407614c55e914a70c.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
+      "Arn"
+     ]
+    },
+    "Description": "src/lambda/process-metrics.lambda.ts",
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "StatefulConstructIotTable62D1C116"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 2048,
+    "Runtime": "nodejs14.x"
+   },
+   "DependsOn": [
+    "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
+    "BackendConstructProcessMetricsFunctionServiceRole76F32C27"
+   ]
+  },
+  "BackendConstructProcessMetricsFunctionSqsEventSourceProcessMetricsStatefulConstructIotQueueD749C64411B05F17": {
+   "Type": "AWS::Lambda::EventSourceMapping",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "BackendConstructProcessMetricsFunctionBC3950FC"
+    },
+    "EventSourceArn": {
+     "Fn::GetAtt": [
+      "StatefulConstructIotQueue64FEBDA0",
+      "Arn"
+     ]
     }
+   }
+  },
+  "ProcessMetricsIntegFunctionServiceRole1F4D1587": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "ProcessMetricsIntegFunctionServiceRoleDefaultPolicyEBFA7185": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StatefulConstructIotTable62D1C116",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StatefulConstructIotTable62D1C116",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ProcessMetricsIntegFunctionServiceRoleDefaultPolicyEBFA7185",
+    "Roles": [
+     {
+      "Ref": "ProcessMetricsIntegFunctionServiceRole1F4D1587"
+     }
+    ]
+   }
+  },
+  "ProcessMetricsIntegFunctionDBBB967F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "7ffc41624e4b0b044a8c961e0dda315cb7775296799a6a1ab75182020156d9c2.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ProcessMetricsIntegFunctionServiceRole1F4D1587",
+      "Arn"
+     ]
+    },
+    "Description": "src/lambda/process-metrics-integ.lambda.ts",
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "StatefulConstructIotTable62D1C116"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "Runtime": "nodejs14.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "ProcessMetricsIntegFunctionServiceRoleDefaultPolicyEBFA7185",
+    "ProcessMetricsIntegFunctionServiceRole1F4D1587"
+   ]
+  },
+  "ProcessMetricsIntegFunctionCurrentVersionC3E103904fe24f6e896f30b2d0618667adb52156": {
+   "Type": "AWS::Lambda::Version",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "ProcessMetricsIntegFunctionDBBB967F"
+    }
+   }
+  },
+  "LambdaIotPolicyF6E3F8BF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "iot:*",
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaIotPolicyF6E3F8BF",
+    "Roles": [
+     {
+      "Ref": "ProcessMetricsIntegFunctionServiceRole1F4D1587"
+     }
+    ]
+   }
+  },
+  "RunAssertionsC95CD85B": {
+   "Type": "Custom::Trigger",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91",
+      "Arn"
+     ]
+    },
+    "HandlerArn": {
+     "Ref": "ProcessMetricsIntegFunctionCurrentVersionC3E103904fe24f6e896f30b2d0618667adb52156"
+    }
+   },
+   "DependsOn": [
+    "BackendConstructProcessMetricsFunctionBC3950FC",
+    "BackendConstructProcessMetricsFunctionServiceRoleDefaultPolicyC63930E6",
+    "BackendConstructProcessMetricsFunctionServiceRole76F32C27",
+    "BackendConstructProcessMetricsFunctionSqsEventSourceProcessMetricsStatefulConstructIotQueueD749C64411B05F17",
+    "StatefulConstructIotQueue64FEBDA0",
+    "StatefulConstructIotTable62D1C116",
+    "StatefulConstructTopicRule36E01E2C",
+    "StatefulConstructTopicRuleTopicRuleActionRoleDefaultPolicy8F86EF87",
+    "StatefulConstructTopicRuleTopicRuleActionRole923198F2"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "AWSCDKTriggerCustomResourceProviderCustomResourceProviderRoleE18FAF0A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "lambda:InvokeFunction"
+         ],
+         "Resource": [
+          "*"
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   }
+  },
+  "AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "3e777716071641d12d67b3b44f6ddbe57437dc432ec6884eaf45828762672819.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "AWSCDKTriggerCustomResourceProviderCustomResourceProviderRoleE18FAF0A",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs14.x"
+   },
+   "DependsOn": [
+    "AWSCDKTriggerCustomResourceProviderCustomResourceProviderRoleE18FAF0A"
+   ]
   }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
 }
