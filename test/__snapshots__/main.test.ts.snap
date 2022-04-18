@@ -20,7 +20,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "a2de8600b7063bdbfb5c42097bd5710aef40a5f447d5be1407614c55e914a70c.zip",
+          "S3Key": "206c97c2f69c1a7b00114e30639581c64c8df66e57ca7114c0fc87fa6f5afcc1.zip",
         },
         "Description": "src/lambda/process-metrics.lambda.ts",
         "Environment": Object {
